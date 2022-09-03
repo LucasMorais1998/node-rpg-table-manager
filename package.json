@@ -8,7 +8,7 @@
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "test": "node ace test --watch"
+    "test": "node ace test --watch --tests"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +41,7 @@
     "@adonisjs/assembler": "^5.8.1",
     "@japa/preset-adonis": "^1.1.0",
     "@japa/runner": "^2.1.1",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "adonis-preset-ts": "^2.1.0",
@@ -54,6 +55,7 @@
     "pino-pretty": "^9.1.0",
     "prettier": "^2.7.1",
     "sqlite3": "^5.0.11",
+    "supertest": "^6.2.4",
     "typescript": "~4.6",
     "youch": "^3.2.1",
     "youch-terminal": "^2.1.5"
