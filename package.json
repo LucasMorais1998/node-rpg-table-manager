@@ -35,7 +35,7 @@
     "quoteProps": "consistent",
     "bracketSpacing": true,
     "arrowParens": "always",
-    "printWidth": 100
+    "printWidth": 80
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.8.1",
