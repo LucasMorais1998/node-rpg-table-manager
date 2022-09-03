@@ -24,13 +24,16 @@ test.group("User", () => {
       avatar: "https://source.unsplash.com/random",
     };
 
-    const { body } = await supertest(BASE_URL).post("/users").send(userPayload).expect(201);
+    const { body } = await supertest(BASE_URL)
+      .post("/users")
+      .send(userPayload)
+      .expect(201);
 
     assert.exists(body.user, "User undefined");
     assert.exists(body.user.id, "Id undefined");
     assert.equal(body.user.email, userPayload.email);
     assert.equal(body.user.username, userPayload.username);
-    assert.equal(body.user.password, userPayload.password);
+    assert.notExists(body.user.password, "Password defined");
     assert.equal(body.user.avatar, userPayload.avatar);
   });
 });
