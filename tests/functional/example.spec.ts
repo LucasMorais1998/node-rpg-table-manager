@@ -1,9 +1,9 @@
-import { test } from '@japa/runner'
+import { test } from "@japa/runner";
 
 function showHelloWorld(name: string) {
-  return `Hello World ${name}!`
+  return `Hello World ${name}!`;
 }
 
-test('should show hello world', ({ assert }) => {
-  assert.equal(showHelloWorld('Lucas'), 'Hello World Lucas!')
-})
+test("should show hello world", ({ assert }) => {
+  assert.equal(showHelloWorld("Lucas"), "Hello World Lucas!");
+});
