@@ -1,9 +1,9 @@
 import { test } from '@japa/runner'
 
-function sum(a, b) {
-  return a + b
+function showHelloWorld(name: string) {
+  return `Hello World ${name}!`
 }
 
-test('add two numbers', ({ assert }) => {
-  assert.equal(sum(2, 2), 4)
+test('should show hello world', ({ assert }) => {
+  assert.equal(showHelloWorld('Lucas'), 'Hello World Lucas!')
 })
