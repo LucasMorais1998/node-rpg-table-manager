@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Contract source: https://bit.ly/3DP1ypf
  *

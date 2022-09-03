@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Contract source: https://git.io/JfefG
  *

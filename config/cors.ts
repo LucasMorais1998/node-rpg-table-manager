@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Config source: https://git.io/JfefC
  *

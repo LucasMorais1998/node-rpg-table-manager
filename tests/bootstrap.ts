@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * File source: https://bit.ly/3ukaHTz
  *
@@ -6,7 +7,12 @@
  */
 
 import TestUtils from "@ioc:Adonis/Core/TestUtils";
-import { apiClient, assert, runFailedTests, specReporter } from "@japa/preset-adonis";
+import {
+  apiClient,
+  assert,
+  runFailedTests,
+  specReporter,
+} from "@japa/preset-adonis";
 import type { Config } from "@japa/runner";
 
 /*
@@ -20,7 +26,11 @@ import type { Config } from "@japa/runner";
 | Feel free to remove existing plugins or add more.
 |
 */
-export const plugins: Config["plugins"] = [assert(), runFailedTests(), apiClient()];
+export const plugins: Config["plugins"] = [
+  assert(),
+  runFailedTests(),
+  apiClient(),
+];
 
 /*
 |--------------------------------------------------------------------------
@@ -47,10 +57,7 @@ export const reporters: Config["reporters"] = [specReporter()];
 |
 */
 export const runnerHooks: Required<Pick<Config, "setup" | "teardown">> = {
-  setup: [
-    () => TestUtils.ace().loadCommands(),
-    () => TestUtils.db().migrate()
-  ],
+  setup: [() => TestUtils.ace().loadCommands(), () => TestUtils.db().migrate()],
   teardown: [],
 };
 
