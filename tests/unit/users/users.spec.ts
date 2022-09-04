@@ -36,7 +36,7 @@ test.group("User", (group) => {
     assert.exists(body.user.id, "Id undefined");
     assert.equal(body.user.email, userPayload.email);
     assert.equal(body.user.username, userPayload.username);
-    assert.notExists(body.user.password, "Password defined");
+    assert.notExists(body.user.password, "Password undefined");
   });
 
   test("It should return 409 when email is already in use", async ({
