@@ -1,3 +1,4 @@
+import Mail from "@ioc:Adonis/Addons/Mail";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { test } from "@japa/runner";
 import { UserFactory } from "Database/factories";
@@ -11,6 +12,8 @@ test.group("Password", (group) => {
   }) => {
     const user = await UserFactory.create();
 
+    const mailer = Mail.fake();
+
     await supertest(BASE_URL)
       .post("/forgot-password")
       .send({
@@ -18,6 +21,28 @@ test.group("Password", (group) => {
         resetPasswordUrl: "url",
       })
       .expect(204);
+
+    const message = mailer.find((mail) => {
+      return mail.to?.[0].address === user.email;
+    });
+
+    assert.deepEqual(message?.to, [
+      {
+        address: user.email,
+        name: "",
+      },
+    ]);
+
+    assert.deepEqual(message?.from, {
+      address: "no-reply@roleplay.com",
+      name: "",
+    });
+
+    assert.equal(message?.subject, "Roleplay: Recuperação de Senha");
+
+    assert.include(message?.html, user.username);
+
+    Mail.restore();
   });
 
   group.each.setup(async () => {
