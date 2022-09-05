@@ -61,6 +61,19 @@ test.group("Password", (group) => {
     assert.isNotEmpty(tokens);
   });
 
+  // eslint-disable-next-line max-len
+  test("It should return 422 when required data is not provided or date is invalid", async ({
+    assert,
+  }) => {
+    const { body } = await supertest(BASE_URL)
+      .post("/forgot-password")
+      .send({})
+      .expect(422);
+
+    assert.equal(body.code, "BAD_REQUEST");
+    assert.equal(body.status, 422);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
