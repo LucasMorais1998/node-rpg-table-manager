@@ -45,6 +45,22 @@ test.group("Password", (group) => {
     Mail.restore();
   });
 
+  test("It should create a reset password token", async ({ assert }) => {
+    const user = await UserFactory.create();
+
+    await supertest(BASE_URL)
+      .post("/forgot-password")
+      .send({
+        email: user.email,
+        resetPassword: "url",
+      })
+      .expect(204);
+
+    const tokens = await user.related("tokens").query();
+
+    assert.isNotEmpty(tokens);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
