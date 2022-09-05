@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { CustomMessages, schema } from "@ioc:Adonis/Core/Validator";
 
