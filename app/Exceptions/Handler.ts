@@ -25,13 +25,21 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 
   public async handle(error: Exception, ctx: HttpContextContract) {
-    if (error.status === 422)
+    if (error.status === 422) {
       return ctx.response.status(error.status).send({
         code: "BAD_REQUEST",
         message: error.message,
         status: error.status,
         errors: error["messages"]?.errors ? error["messages"].errors : "",
       });
+    } else if (error.code === "E_ROW_NOT_FOUND") {
+      return ctx.response.status(error.status).send({
+        code: "BAD_REQUEST",
+        message: "resource not found",
+        status: 404,
+        errors: error["messages"]?.errors ? error["messages"].errors : "",
+      });
+    }
 
     return super.handle(error, ctx);
   }
