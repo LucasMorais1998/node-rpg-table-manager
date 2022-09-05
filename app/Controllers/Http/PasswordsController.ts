@@ -2,6 +2,7 @@ import Mail from "@ioc:Adonis/Addons/Mail";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import User from "App/Models/User";
 import ForgotPassword from "App/Validators/ForgotPasswordValidator";
+import ResetPassword from "App/Validators/ResetPasswordValidator";
 import { randomBytes } from "crypto";
 import { promisify } from "util";
 
@@ -34,6 +35,22 @@ export default class PasswordsController {
           resetPasswordUrl: resetPasswordUrlWithToken,
         });
     });
+
+    return response.noContent();
+  }
+
+  public async resetPassword({ request, response }: HttpContextContract) {
+    const { token, password } = await request.validate(ResetPassword);
+
+    const userByToken = await User.query()
+      .whereHas("tokens", (query) => {
+        query.where("token", token);
+      })
+      .firstOrFail();
+
+    userByToken.password = password;
+
+    await userByToken.save();
 
     return response.noContent();
   }
