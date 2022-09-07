@@ -72,6 +72,50 @@ test.group("Sessions", (group) => {
     assert.equal(body.status, 400);
   });
 
+  test("It should return 200 when user signs out", async ({ assert }) => {
+    const plainPassword = "test";
+
+    const { email } = await UserFactory.merge({
+      password: plainPassword,
+    }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send({ email, password: plainPassword })
+      .expect(201);
+
+    const apiToken = body.token;
+
+    await supertest(BASE_URL)
+      .delete("/sessions")
+      .set("Authorization", `Bearer ${apiToken.token}`)
+      .expect(200);
+  });
+
+  test("It should revoke token when user signs out", async ({ assert }) => {
+    const plainPassword = "test";
+
+    const { email } = await UserFactory.merge({
+      password: plainPassword,
+    }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send({ email, password: plainPassword })
+      .expect(201);
+
+    const apiToken = body.token;
+
+    await supertest(BASE_URL)
+      .delete("/sessions")
+      .set("Authorization", `Bearer ${apiToken.token}`)
+      .expect(200);
+
+    const token = await Database.query().select("*").from("api_tokens");
+
+    assert.isEmpty(token);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
