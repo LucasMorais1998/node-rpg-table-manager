@@ -72,7 +72,7 @@ test.group("Sessions", (group) => {
     assert.equal(body.status, 400);
   });
 
-  test("It should return 200 when user signs out", async ({ assert }) => {
+  test("It should return 200 when user signs out", async () => {
     const plainPassword = "test";
 
     const { email } = await UserFactory.merge({
