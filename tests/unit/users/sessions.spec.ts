@@ -54,6 +54,24 @@ test.group("Sessions", (group) => {
     assert.equal(body.status, 400);
   });
 
+  test("It should return 400 when credentials are invalid", async ({
+    assert,
+  }) => {
+    const { email } = await UserFactory.create();
+
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send({
+        email,
+        password: "test",
+      })
+      .expect(400);
+
+    assert.equal(body.code, "BAD_REQUEST");
+    assert.equal(body.message, "invalid credentials");
+    assert.equal(body.status, 400);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
