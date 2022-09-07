@@ -42,6 +42,18 @@ test.group("Sessions", (group) => {
     assert.equal(body.user.id, id);
   });
 
+  test("It should return 400 when credentials are not provided", async ({
+    assert,
+  }) => {
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send()
+      .expect(400);
+
+    assert.equal(body.code, "BAD_REQUEST");
+    assert.equal(body.status, 400);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
