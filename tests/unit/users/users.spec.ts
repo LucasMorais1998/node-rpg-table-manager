@@ -5,6 +5,7 @@ import { UserFactory } from "Database/factories";
 import supertest from "supertest";
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`;
+let token = "";
 
 /*
   {
@@ -128,6 +129,21 @@ test.group("User", (group) => {
   });
 
   test("It should update an user", async ({ assert }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const { id, password } = await UserFactory.create();
 
     const email = "test@test.com";
@@ -135,6 +151,7 @@ test.group("User", (group) => {
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         email,
         avatar,
@@ -149,12 +166,28 @@ test.group("User", (group) => {
   });
 
   test("It should update the password of the user", async ({ assert }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const user = await UserFactory.create();
 
     const password = "test";
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${user.id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         email: user.email,
         avatar: user.avatar,
@@ -174,10 +207,26 @@ test.group("User", (group) => {
   test("It should return 422 when required data to update is not provided", async ({
     assert,
   }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const { id } = await UserFactory.create();
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({})
       .expect(422);
 
@@ -188,10 +237,26 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid email on update", async ({
     assert,
   }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const { id, password, avatar } = await UserFactory.create();
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         password,
         avatar,
@@ -207,10 +272,26 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid password on update", async ({
     assert,
   }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const { id, email, avatar } = await UserFactory.create();
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         password: "tes",
         avatar,
@@ -225,10 +306,26 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid avatar on update", async ({
     assert,
   }) => {
+    await (async () => {
+      const plainPassword = "test";
+
+      const { email } = await UserFactory.merge({
+        password: plainPassword,
+      }).create();
+
+      const { body } = await supertest(BASE_URL)
+        .post("/sessions")
+        .send({ email, password: plainPassword })
+        .expect(201);
+
+      token = body.token.token;
+    })();
+
     const { id, email, password } = await UserFactory.create();
 
     const { body } = await supertest(BASE_URL)
       .put(`/users/${id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         password,
         avatar: "test",
