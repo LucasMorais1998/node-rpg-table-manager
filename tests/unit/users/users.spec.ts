@@ -1,11 +1,13 @@
 import Hash from "@ioc:Adonis/Core/Hash";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { test } from "@japa/runner";
+import User from "App/Models/User";
 import { UserFactory } from "Database/factories";
 import supertest from "supertest";
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`;
 let token = "";
+let user = {} as User;
 
 /*
   {
@@ -132,56 +134,54 @@ test.group("User", (group) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
-
-    const { id, password } = await UserFactory.create();
 
     const email = "test@test.com";
     const avatar = "https://avatars.githubusercontent.com/u/89818412?v=4";
 
     const { body } = await supertest(BASE_URL)
-      .put(`/users/${id}`)
+      .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         email,
         avatar,
-        password,
+        password: user.password,
       })
       .expect(200);
 
     assert.exists(body.user, "User undefined");
     assert.equal(body.user.email, email);
     assert.equal(body.user.avatar, avatar);
-    assert.equal(body.user.id, id);
+    assert.equal(body.user.id, user.id);
   });
 
   test("It should update the password of the user", async ({ assert }) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
-
-    const user = await UserFactory.create();
 
     const password = "test";
 
@@ -210,22 +210,21 @@ test.group("User", (group) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
 
-    const { id } = await UserFactory.create();
-
     const { body } = await supertest(BASE_URL)
-      .put(`/users/${id}`)
+      .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({})
       .expect(422);
@@ -240,26 +239,25 @@ test.group("User", (group) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
 
-    const { id, password, avatar } = await UserFactory.create();
-
     const { body } = await supertest(BASE_URL)
-      .put(`/users/${id}`)
+      .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
-        password,
-        avatar,
+        password: user.password,
+        avatar: user.avatar,
         email: "test",
       })
       .expect(422);
@@ -275,27 +273,26 @@ test.group("User", (group) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
 
-    const { id, email, avatar } = await UserFactory.create();
-
     const { body } = await supertest(BASE_URL)
-      .put(`/users/${id}`)
+      .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         password: "tes",
-        avatar,
-        email,
+        avatar: user.avatar,
+        email: user.email,
       })
       .expect(422);
 
@@ -309,27 +306,26 @@ test.group("User", (group) => {
     await (async () => {
       const plainPassword = "test";
 
-      const { email } = await UserFactory.merge({
+      const newUser = await UserFactory.merge({
         password: plainPassword,
       }).create();
 
       const { body } = await supertest(BASE_URL)
         .post("/sessions")
-        .send({ email, password: plainPassword })
+        .send({ email: newUser.email, password: plainPassword })
         .expect(201);
 
       token = body.token.token;
+      user = newUser;
     })();
 
-    const { id, email, password } = await UserFactory.create();
-
     const { body } = await supertest(BASE_URL)
-      .put(`/users/${id}`)
+      .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
-        password,
+        password: user.password,
         avatar: "test",
-        email,
+        email: user.email,
       })
       .expect(422);
 
