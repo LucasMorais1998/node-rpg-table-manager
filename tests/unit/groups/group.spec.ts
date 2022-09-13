@@ -32,6 +32,18 @@ test.group("Group", (group) => {
     assert.equal(body.group.master, groupPayload.master);
   });
 
+  test("It should return 422 when required group-data is not provided", async ({
+    assert,
+  }) => {
+    const { body } = await supertest(BASE_URL)
+      .post("/groups")
+      .send({})
+      .expect(422);
+
+    assert.equal(body.code, "BAD_REQUEST");
+    assert.equal(body.status, 422);
+  });
+
   group.each.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
