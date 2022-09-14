@@ -1,5 +1,5 @@
-import { test } from "@japa/runner";
 import Database from "@ioc:Adonis/Lucid/Database";
+import { test } from "@japa/runner";
 import { UserFactory } from "Database/factories";
 import supertest from "supertest";
 
@@ -114,7 +114,7 @@ test.group("Sessions", (group) => {
     assert.isEmpty(token);
   });
 
-  group.each.setup(async () => {
+  group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
   });
