@@ -160,7 +160,7 @@ test.group("Password", (group) => {
     assert.equal(body.message, "token has expired");
   });
 
-  group.each.setup(async () => {
+  group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
   });
