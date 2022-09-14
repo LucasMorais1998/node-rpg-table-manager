@@ -30,6 +30,10 @@ test.group("Group", (group) => {
     assert.equal(body.group.location, groupPayload.location);
     assert.equal(body.group.chronic, groupPayload.chronic);
     assert.equal(body.group.master, groupPayload.master);
+
+    assert.exists(body.group.players, "Players undefined");
+    assert.equal(body.group.players.length, 1);
+    assert.equal(body.group.players[0].id, groupPayload.master);
   });
 
   test("It should return 422 when required group-data is not provided", async ({
