@@ -1,14 +1,15 @@
 import Database from "@ioc:Adonis/Lucid/Database";
 import { test } from "@japa/runner";
+import User from "App/Models/User";
 import { UserFactory } from "Database/factories";
 import supertest from "supertest";
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`;
+let token = "";
+let user = {} as User;
 
 test.group("Group", (group) => {
   test("It should create a group", async ({ assert }) => {
-    const user = await UserFactory.create();
-
     const groupPayload = {
       name: "test",
       description: "test",
@@ -20,6 +21,7 @@ test.group("Group", (group) => {
 
     const { body } = await supertest(BASE_URL)
       .post("/groups")
+      .set("Authorization", `Bearer ${token}`)
       .send(groupPayload)
       .expect(201);
 
@@ -41,6 +43,7 @@ test.group("Group", (group) => {
   }) => {
     const { body } = await supertest(BASE_URL)
       .post("/groups")
+      .set("Authorization", `Bearer ${token}`)
       .send({})
       .expect(422);
 
@@ -48,8 +51,30 @@ test.group("Group", (group) => {
     assert.equal(body.status, 422);
   });
 
-  group.each.setup(async () => {
+  group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
+  });
+
+  group.setup(async () => {
+    const plainPassword = "test";
+
+    const newUser = await UserFactory.merge({
+      password: plainPassword,
+    }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send({ email: newUser.email, password: plainPassword })
+      .expect(201);
+
+    token = body.token.token;
+    user = newUser;
+  });
+
+  group.teardown(async () => {
+    await supertest(BASE_URL)
+      .delete("/sessions")
+      .set("Authorization", `Bearer ${token}`);
   });
 });
