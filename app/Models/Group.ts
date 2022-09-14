@@ -1,4 +1,11 @@
-import { BaseModel, belongsTo, BelongsTo, column } from "@ioc:Adonis/Lucid/Orm";
+import {
+  BaseModel,
+  belongsTo,
+  BelongsTo,
+  column,
+  manyToMany,
+  ManyToMany,
+} from "@ioc:Adonis/Lucid/Orm";
 import User from "App/Models/User";
 import { DateTime } from "luxon";
 
@@ -23,6 +30,11 @@ export default class Group extends BaseModel {
 
   @column()
   public master: number;
+
+  @manyToMany(() => User, {
+    pivotTable: "groups_users",
+  })
+  public players: ManyToMany<typeof User>;
 
   @belongsTo(() => User, {
     foreignKey: "master",
