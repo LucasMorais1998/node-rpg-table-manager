@@ -5,8 +5,11 @@ import {
   column,
   HasMany,
   hasMany,
+  manyToMany,
+  ManyToMany,
 } from "@ioc:Adonis/Lucid/Orm";
 import { DateTime } from "luxon";
+import Group from "./Group";
 import LinkToken from "./LinkToken";
 
 export default class User extends BaseModel {
@@ -29,6 +32,11 @@ export default class User extends BaseModel {
     foreignKey: "userId",
   })
   public tokens: HasMany<typeof LinkToken>;
+
+  @manyToMany(() => Group, {
+    pivotTable: "groups_users",
+  })
+  public groups: ManyToMany<typeof Group>;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
