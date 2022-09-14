@@ -9,18 +9,6 @@ const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`;
 let token = "";
 let user = {} as User;
 
-/*
-  {
-    "users": {
-      "id": number
-      "email": string,
-      "username": string,
-      "password": string,
-      "avatar": string
-    }
-  }
-*/
-
 test.group("User", (group) => {
   test("It should create an user", async ({ assert }) => {
     const userPayload = {
@@ -86,7 +74,7 @@ test.group("User", (group) => {
     assert.equal(body.status, 409);
   });
 
-  test("It should return 422 when required data is not provided", async ({
+  test("It should return 422 when required user-data is not provided", async ({
     assert,
   }) => {
     const { body } = await supertest(BASE_URL)
@@ -167,22 +155,6 @@ test.group("User", (group) => {
   });
 
   test("It should update the password of the user", async ({ assert }) => {
-    await (async () => {
-      const plainPassword = "test";
-
-      const newUser = await UserFactory.merge({
-        password: plainPassword,
-      }).create();
-
-      const { body } = await supertest(BASE_URL)
-        .post("/sessions")
-        .send({ email: newUser.email, password: plainPassword })
-        .expect(201);
-
-      token = body.token.token;
-      user = newUser;
-    })();
-
     const password = "test";
 
     const { body } = await supertest(BASE_URL)
@@ -207,22 +179,6 @@ test.group("User", (group) => {
   test("It should return 422 when required data to update is not provided", async ({
     assert,
   }) => {
-    await (async () => {
-      const plainPassword = "test";
-
-      const newUser = await UserFactory.merge({
-        password: plainPassword,
-      }).create();
-
-      const { body } = await supertest(BASE_URL)
-        .post("/sessions")
-        .send({ email: newUser.email, password: plainPassword })
-        .expect(201);
-
-      token = body.token.token;
-      user = newUser;
-    })();
-
     const { body } = await supertest(BASE_URL)
       .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
@@ -236,22 +192,6 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid email on update", async ({
     assert,
   }) => {
-    await (async () => {
-      const plainPassword = "test";
-
-      const newUser = await UserFactory.merge({
-        password: plainPassword,
-      }).create();
-
-      const { body } = await supertest(BASE_URL)
-        .post("/sessions")
-        .send({ email: newUser.email, password: plainPassword })
-        .expect(201);
-
-      token = body.token.token;
-      user = newUser;
-    })();
-
     const { body } = await supertest(BASE_URL)
       .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
@@ -270,22 +210,6 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid password on update", async ({
     assert,
   }) => {
-    await (async () => {
-      const plainPassword = "test";
-
-      const newUser = await UserFactory.merge({
-        password: plainPassword,
-      }).create();
-
-      const { body } = await supertest(BASE_URL)
-        .post("/sessions")
-        .send({ email: newUser.email, password: plainPassword })
-        .expect(201);
-
-      token = body.token.token;
-      user = newUser;
-    })();
-
     const { body } = await supertest(BASE_URL)
       .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
@@ -303,22 +227,6 @@ test.group("User", (group) => {
   test("It should return 422 when providing invalid avatar on update", async ({
     assert,
   }) => {
-    await (async () => {
-      const plainPassword = "test";
-
-      const newUser = await UserFactory.merge({
-        password: plainPassword,
-      }).create();
-
-      const { body } = await supertest(BASE_URL)
-        .post("/sessions")
-        .send({ email: newUser.email, password: plainPassword })
-        .expect(201);
-
-      token = body.token.token;
-      user = newUser;
-    })();
-
     const { body } = await supertest(BASE_URL)
       .put(`/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
@@ -333,8 +241,30 @@ test.group("User", (group) => {
     assert.equal(body.status, 422);
   });
 
-  group.each.setup(async () => {
+  group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
+  });
+
+  group.setup(async () => {
+    const plainPassword = "test";
+
+    const newUser = await UserFactory.merge({
+      password: plainPassword,
+    }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .post("/sessions")
+      .send({ email: newUser.email, password: plainPassword })
+      .expect(201);
+
+    token = body.token.token;
+    user = newUser;
+  });
+
+  group.teardown(async () => {
+    await supertest(BASE_URL)
+      .delete("/sessions")
+      .set("Authorization", `Bearer ${token}`);
   });
 });
