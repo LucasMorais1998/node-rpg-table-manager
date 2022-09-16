@@ -54,7 +54,7 @@ test.group("Password", (group) => {
       .post("/forgot-password")
       .send({
         email: user.email,
-        resetPassword: "url",
+        resetPasswordUrl: "url",
       })
       .expect(204);
 
