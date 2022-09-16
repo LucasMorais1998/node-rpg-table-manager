@@ -29,8 +29,8 @@
   "tests": {
     "suites": [
       {
-        "name": "unit",
-        "files": ["tests/unit/**/*.spec(.ts|.js)"],
+        "name": "functional",
+        "files": ["tests/functional/**/*.spec(.ts|.js)"],
         "timeout": 60000
       }
     ]
