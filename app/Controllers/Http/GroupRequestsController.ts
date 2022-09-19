@@ -5,9 +5,17 @@ import GroupRequest from "App/Models/GroupRequest";
 
 export default class GroupRequestsController {
   public async index({ request, response }: HttpContextContract) {
+    const { master } = request.qs();
 
-    
-    return response.ok({});
+    const groupRequests = await GroupRequest.query()
+      .preload("group")
+      .preload("user")
+      .whereHas("group", (query) => {
+        query.where("master", Number(master));
+      })
+      .where("status", "PENDING");
+
+    return response.ok({ groupRequests });
   }
 
   public async store({ request, response, auth }: HttpContextContract) {
