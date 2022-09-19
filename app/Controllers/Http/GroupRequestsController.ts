@@ -4,6 +4,12 @@ import Group from "App/Models/Group";
 import GroupRequest from "App/Models/GroupRequest";
 
 export default class GroupRequestsController {
+  public async index({ request, response }: HttpContextContract) {
+
+    
+    return response.ok({});
+  }
+
   public async store({ request, response, auth }: HttpContextContract) {
     const groupId = request.param("groupId") as number;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
