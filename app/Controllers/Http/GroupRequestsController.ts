@@ -53,4 +53,8 @@ export default class GroupRequestsController {
 
     return response.created({ groupRequest });
   }
+
+  public async accept({ request, response }: HttpContextContract) {
+    return response.ok({});
+  }
 }
