@@ -40,3 +40,7 @@ Route.post(
   "/groups/:groupId/requests",
   "GroupRequestsController.store"
 ).middleware("auth");
+Route.post(
+  "/groups/:groupId/requests/:requestId/accept",
+  "GroupRequestsController.accept"
+);
