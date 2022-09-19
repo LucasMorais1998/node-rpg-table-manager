@@ -101,6 +101,40 @@ test.group("Group Requset", (group) => {
     assert.equal(body.groupRequests[0].group.master, master.id);
   });
 
+  // eslint-disable-next-line max-len
+  test("It should return an empty list when master has no group requests", async ({
+    assert,
+  }) => {
+    const master = await UserFactory.create();
+    const group = await GroupFactory.merge({ master: master.id }).create();
+
+    await supertest(BASE_URL)
+      .post(`/groups/${group.id}/requests`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    const { body } = await supertest(BASE_URL)
+      .get(`/groups/${group.id}/requests?master=${user.id}`)
+      .expect(200);
+
+    assert.exists(body.groupRequests, "GroupRequests undefined");
+    assert.equal(body.groupRequests.length, 0);
+  });
+
+  test("It should return 422 when master is not provided", async ({
+    assert,
+  }) => {
+    const master = await UserFactory.create();
+    const group = await GroupFactory.merge({ master: master.id }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .get(`/groups/${group.id}/requests`)
+      .expect(422);
+
+    assert.exists(body.code, "BAD_REQUEST");
+    assert.equal(body.status, 422);
+  });
+
   group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
