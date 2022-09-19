@@ -144,11 +144,14 @@ test.group("Group Requset", (group) => {
       .set("Authorization", `Bearer ${token}`)
       .send({});
 
-    await supertest(BASE_URL)
+    const response = await supertest(BASE_URL)
       .post(`/groups/${group.id}/requests/${body.groupRequest.id}/accept`)
       .expect(200);
 
-    assert;
+    assert.exists(response.body.groupRequest, "GroupRequest undefined");
+    assert.equal(response.body.groupRequest.userId, user.id);
+    assert.equal(response.body.groupRequest.groupId, group.id);
+    assert.equal(response.body.groupRequest.status, "ACCEPTED");
   });
 
   group.setup(async () => {
