@@ -44,3 +44,7 @@ Route.post(
   "/groups/:groupId/requests/:requestId/accept",
   "GroupRequestsController.accept"
 );
+Route.delete(
+  "/groups/:groupId/requests/:requestId",
+  "GroupRequestsController.destroy"
+);
