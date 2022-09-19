@@ -1,4 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import BadRequest from "App/Exceptions/BadRequestException";
 import GroupRequest from "App/Models/GroupRequest";
 
 export default class GroupRequestsController {
@@ -6,6 +7,14 @@ export default class GroupRequestsController {
     const groupId = request.param("groupId") as number;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const userId = auth.user!.id;
+
+    const existingGroupRequest = await GroupRequest.query()
+      .where("groupId", groupId)
+      .andWhere("userId", userId)
+      .first();
+
+    if (existingGroupRequest)
+      throw new BadRequest("group request already exists", 409);
 
     const groupRequest = await GroupRequest.create({ groupId, userId });
     await groupRequest.refresh();
