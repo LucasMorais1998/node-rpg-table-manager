@@ -67,6 +67,9 @@ export default class GroupRequestsController {
       status: "ACCEPTED",
     });
 
+    await groupRequest.load("group");
+    await groupRequest.group.related("players").attach([groupRequest.userId]);
+
     return response.ok({ groupRequest: updatedGroupRequest });
   }
 }
