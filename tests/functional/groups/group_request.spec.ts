@@ -135,6 +135,22 @@ test.group("Group Requset", (group) => {
     assert.equal(body.status, 422);
   });
 
+  test("It should accept a group request", async ({ assert }) => {
+    const master = await UserFactory.create();
+    const group = await GroupFactory.merge({ master: master.id }).create();
+
+    const { body } = await supertest(BASE_URL)
+      .post(`/groups/${group.id}/requests`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    await supertest(BASE_URL)
+      .post(`/groups/${group.id}/requests/${body.groupRequest.id}/accept`)
+      .expect(200);
+
+    assert;
+  });
+
   group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
