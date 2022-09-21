@@ -1,5 +1,6 @@
 import Database from "@ioc:Adonis/Lucid/Database";
 import { test } from "@japa/runner";
+import Group from "App/Models/Group";
 import User from "App/Models/User";
 import { GroupFactory, UserFactory } from "Database/factories";
 import supertest from "supertest";
@@ -120,6 +121,34 @@ test.group("Group", (group) => {
     await group.load("players");
 
     assert.isEmpty(group.players);
+  });
+
+  test("It should not remove the master of the group", async ({ assert }) => {
+    const groupPayload = {
+      name: "test",
+      description: "test",
+      schedule: "test",
+      location: "test",
+      chronic: "test",
+      master: user.id,
+    };
+
+    const { body } = await supertest(BASE_URL)
+      .post("/groups")
+      .set("Authorization", `Bearer ${token}`)
+      .send(groupPayload);
+
+    const group = body.group;
+
+    await supertest(BASE_URL)
+      .delete(`/groups/${group.id}/players/${user.id}`)
+      .expect(400);
+
+    const groupModel = await Group.findOrFail(group.id);
+
+    await groupModel.load("players");
+
+    assert.isNotEmpty(groupModel.players);
   });
 
   group.setup(async () => {
