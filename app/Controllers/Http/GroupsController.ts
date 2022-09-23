@@ -46,7 +46,6 @@ export default class GroupsController {
     const group = await Group.findOrFail(id);
 
     await group.delete();
-    await group.related("players").detach();
 
     return response.ok({});
   }
