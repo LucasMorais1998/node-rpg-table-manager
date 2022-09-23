@@ -183,6 +183,19 @@ test.group("Group", (group) => {
     assert.isEmpty(players);
   });
 
+  // eslint-disable-next-line max-len
+  test("It should return 404 when providing an unexisting group for deletion", async ({
+    assert,
+  }) => {
+    const { body } = await supertest(BASE_URL)
+      .delete("/groups/1")
+      .send({})
+      .expect(404);
+
+    assert.equal(body.code, "BAD_REQUEST");
+    assert.equal(body.status, 404);
+  });
+
   group.setup(async () => {
     await Database.beginGlobalTransaction();
     return () => Database.rollbackGlobalTransaction();
