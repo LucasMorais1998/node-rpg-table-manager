@@ -17,6 +17,7 @@ export default class extends BaseSchema {
         .unsigned()
         .references("id")
         .inTable("groups")
+        .onDelete("CASCADE")
         .notNullable();
     });
   }
