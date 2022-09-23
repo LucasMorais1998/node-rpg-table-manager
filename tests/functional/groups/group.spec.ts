@@ -228,21 +228,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   test("It should return no groups by user id", async ({ assert }) => {
@@ -267,7 +267,7 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 0);
+    assert.equal(body.groups.data.length, 0);
   });
 
   test("It should return all groups by user id", async ({ assert }) => {
@@ -294,21 +294,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   test("It should return all groups by user id and name", async ({
@@ -343,21 +343,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   test("It should return all groups by user id and description", async ({
@@ -392,21 +392,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   test("It should return all groups by name", async ({ assert }) => {
@@ -439,21 +439,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   test("It should return all groups by description", async ({ assert }) => {
@@ -486,21 +486,21 @@ test.group("Group", (group) => {
       .expect(200);
 
     assert.exists(body.groups, "Groups undefined");
-    assert.equal(body.groups.length, 1);
-    assert.equal(body.groups[0].id, group.id);
-    assert.equal(body.groups[0].name, group.name);
-    assert.equal(body.groups[0].description, group.description);
-    assert.equal(body.groups[0].location, group.location);
-    assert.equal(body.groups[0].schedule, group.schedule);
+    assert.equal(body.groups.data.length, 1);
+    assert.equal(body.groups.data[0].id, group.id);
+    assert.equal(body.groups.data[0].name, group.name);
+    assert.equal(body.groups.data[0].description, group.description);
+    assert.equal(body.groups.data[0].location, group.location);
+    assert.equal(body.groups.data[0].schedule, group.schedule);
 
-    assert.exists(body.groups[0].masterUser, "Master undefined");
-    assert.equal(body.groups[0].masterUser.id, user.id);
-    assert.equal(body.groups[0].masterUser.username, user.username);
+    assert.exists(body.groups.data[0].masterUser, "Master undefined");
+    assert.equal(body.groups.data[0].masterUser.id, user.id);
+    assert.equal(body.groups.data[0].masterUser.username, user.username);
 
-    assert.isNotEmpty(body.groups[0].players, "Empty players");
-    assert.equal(body.groups[0].players[0].id, user.id);
-    assert.equal(body.groups[0].players[0].email, user.email);
-    assert.equal(body.groups[0].players[0].username, user.username);
+    assert.isNotEmpty(body.groups.data[0].players, "Empty players");
+    assert.equal(body.groups.data[0].players[0].id, user.id);
+    assert.equal(body.groups.data[0].players[0].email, user.email);
+    assert.equal(body.groups.data[0].players[0].username, user.username);
   });
 
   group.setup(async () => {
